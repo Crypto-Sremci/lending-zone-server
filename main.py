@@ -2,6 +2,7 @@ import flask
 import requests
 import argparse
 import send_w3
+from flask_cors import CORS
 
 # Fallback to static pricing
 # Value is in USDC, it has 6 0s
@@ -14,6 +15,7 @@ nftval_url = "https://api.nftvaluations.com/production/contracts/{address}/token
 nftval_headers = {"accept": "application/json"}
 
 app = flask.Flask(__name__)
+CORS(app)  # This will enable CORS for all routes
 
 
 @app.route('/')
