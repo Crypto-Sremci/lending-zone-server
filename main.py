@@ -3,8 +3,9 @@ import requests
 import argparse
 
 # Fallback to static pricing
+# Value is in USDC, it has 6 0s
 fallback = False
-stattic_price = {"value": 0.5}
+stattic_price = {"value": 10000000}
 error_price = {"value": -1}
 
 # NFTValuation API
@@ -38,8 +39,9 @@ def token_price(address, id):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Lending Zone Server')
     parser.add_argument('--fallback', dest='fallback', action='store_true')
+    parser.add_argument('--port', dest='port', type=int, default=80)
     args = parser.parse_args()
 
     fallback = args.fallback
 
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=args.port)
