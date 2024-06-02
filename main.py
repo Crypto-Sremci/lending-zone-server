@@ -1,6 +1,7 @@
 import flask
 import requests
 import argparse
+import send_w3
 
 # Fallback to static pricing
 # Value is in USDC, it has 6 0s
@@ -24,16 +25,21 @@ def index():
 def token_price(address, id):
     url = nftval_url.format(address=address, id=id)
     response = requests.get(url, headers=nftval_headers)
+    result = {}
 
     if response.status_code == 200:
-        return response.json()
+        result = response.json()
     else:
         print("Error requsting nftval: " + str(response.text))
 
         if fallback:
-            return stattic_price
+            result = stattic_price
+        else:
+            result = error_price
+    
+    send_w3.send_price(address, id, result["value"])
 
-    return error_price
+    return result
 
 
 if __name__ == '__main__':
